@@ -41,7 +41,7 @@ Go ahead and fork/clone the repository and then setup backend and frontend indiv
 
 1. Enter the client IDs and secrets in *core/settings.py* respectively:
 
-    ```env
+    ```python
     SOCIALACCOUNT_PROVIDERS = {
         "google": {
             "APP": {
