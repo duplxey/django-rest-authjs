@@ -9,15 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
 from datetime import timedelta
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -139,7 +135,6 @@ else:
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ]
 }
@@ -154,9 +149,9 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": os.environ.get("GOOGLE_CLIENT_ID"),
-            "secret": os.environ.get("GOOGLE_SECRET"),
-            "key": "",
+            "client_id": "<your google client id>",
+            "secret": "<your google secret>",
+            "key": "",  # leave empty
         },
         "SCOPE": [
             "profile",
@@ -165,13 +160,15 @@ SOCIALACCOUNT_PROVIDERS = {
         "AUTH_PARAMS": {
             "access_type": "online",
         },
+        "VERIFIED_EMAIL": True,
     },
     "twitter_oauth2": {
         "APP": {
-            "client_id": os.environ.get("TWITTER_CLIENT_ID"),
-            "secret": os.environ.get("TWITTER_SECRET"),
-            "key": "",
-        }
+            "client_id": "<your twitter client id>",
+            "secret": "<your twitter secret>",
+            "key": "",  # leave empty
+        },
+        "VERIFIED_EMAIL": True,
     },
 }
 
@@ -191,7 +188,7 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": os.environ.get("JWT_SECRET_KEY"),
+    "SIGNING_KEY": "jwt-insecure-z6dh*i8cjajq$o6lg-@$%3v06vpl!irr9+v0=+d&5d$f#-(&#t",
     "ALGORITHM": "HS512",
 }
 
@@ -212,6 +209,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

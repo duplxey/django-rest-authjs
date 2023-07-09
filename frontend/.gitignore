@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/webstorm+all,nextjs
 # Edit at https://www.toptal.com/developers/gitignore?templates=webstorm+all,nextjs
 
+.idea/
+
 ### NextJS ###
 # dependencies
 /node_modules

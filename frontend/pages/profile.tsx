@@ -1,4 +1,6 @@
+import {useState} from "react";
 import {signOut, useSession} from "next-auth/react";
+import axios from "axios";
 import {
   Button,
   ButtonGroup,
@@ -11,8 +13,6 @@ import {
   Spinner,
   Text
 } from "@chakra-ui/react";
-import React, {useState} from "react";
-import axios from "axios";
 
 export default function Home() {
 
@@ -22,8 +22,8 @@ export default function Home() {
   const getUserDetails = async (useToken: boolean) => {
     try {
       const response = await axios({
-        url: process.env.NEXT_PUBLIC_BACKEND_URL + "auth/user/",
         method: "get",
+        url: process.env.NEXT_PUBLIC_BACKEND_URL + "auth/user/",
         headers: useToken ? {Authorization: "Bearer " + session?.access_token} : {},
       });
       setResponse(JSON.stringify(response.data));
@@ -42,7 +42,7 @@ export default function Home() {
         <CardHeader>
           <Heading size="md">User profile</Heading>
         </CardHeader>
-        <CardBody>
+        <CardBody py={0}>
           <Text>Username: {session.user.username}</Text>
           <Text>Email: {session.user.email ?? "Not specified"}</Text>
           <Text>PK: {session.user.pk}</Text>
@@ -50,15 +50,15 @@ export default function Home() {
             {response}
           </Code>
         </CardBody>
-        <CardFooter verticalAlign="center">
+        <CardFooter>
           <ButtonGroup>
-            <Button variant="solid" colorScheme="blue" onClick={() => getUserDetails(true)}>
+            <Button colorScheme="blue" onClick={() => getUserDetails(true)}>
               Make authenticated request
             </Button>
-            <Button variant="solid" colorScheme="orange" onClick={() => getUserDetails(false)}>
+            <Button colorScheme="orange" onClick={() => getUserDetails(false)}>
               Make unauthenticated request
             </Button>
-            <Button variant="solid" colorScheme="red" onClick={() => signOut({callbackUrl: "/"})}>
+            <Button colorScheme="red" onClick={() => signOut({callbackUrl: "/"})}>
               Sign out
             </Button>
           </ButtonGroup>
