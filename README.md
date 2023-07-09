@@ -57,15 +57,7 @@ Go ahead and fork/clone the repository and then setup backend and frontend indiv
                 "access_type": "online",
             },
             "VERIFIED_EMAIL": True,
-        },
-        "twitter_oauth2": {
-            "APP": {
-                "client_id": "<your twitter client id>",
-                "secret": "<your twitter secret>",
-                "key": "",  # leave empty
-            },
-            "VERIFIED_EMAIL": True,
-        },
+        }
     }
     ```
 	
@@ -95,10 +87,8 @@ Go ahead and fork/clone the repository and then setup backend and frontend indiv
     NEXTAUTH_BACKEND_URL=http://127.0.0.1:8000/api/
     NEXT_PUBLIC_BACKEND_URL=http://127.0.0.1:8000/api/
 
-	GOOGLE_CLIENT_ID=<your_google_client_id>
-	GOOGLE_CLIENT_SECRET=<your_google_secret>
-	TWITTER_CLIENT_ID=<your_twitter_client_id>
-	TWITTER_SECRET=<your_twitter_secret>
+    GOOGLE_CLIENT_ID=<your_google_client_id>
+    GOOGLE_CLIENT_SECRET=<your_google_secret>
     ```
 	
 1. Run the development server:
