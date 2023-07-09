@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.twitter_oauth2",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     # custom
@@ -159,14 +158,6 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         "AUTH_PARAMS": {
             "access_type": "online",
-        },
-        "VERIFIED_EMAIL": True,
-    },
-    "twitter_oauth2": {
-        "APP": {
-            "client_id": "<your twitter client id>",
-            "secret": "<your twitter secret>",
-            "key": "",  # leave empty
         },
         "VERIFIED_EMAIL": True,
     },
