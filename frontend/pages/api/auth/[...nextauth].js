@@ -4,9 +4,33 @@ import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
 
 // These two values should be a bit less than actual token lifetimes
-const BACKEND_ACCESS_TOKEN_LIFETIME = 45 * 60;            // 45 minutes (60 minutes)
-const BACKEND_REFRESH_TOKEN_LIFETIME = 6 * 24 * 60 * 60;  // 6 days (7 days)
-const BACKEND_SOCIAL_PROVIDERS = ["google"];
+const BACKEND_ACCESS_TOKEN_LIFETIME = 45 * 60;            // 45 minutes
+const BACKEND_REFRESH_TOKEN_LIFETIME = 6 * 24 * 60 * 60;  // 6 days
+
+const SIGN_IN_PROVIDERS = ["credentials", "google"];
+const SIGN_IN_SOCIAL_PROVIDERS = ["google"];
+const SIGN_IN_HANDLERS = {
+  "credentials": async (user, account, profile, email, credentials) => {
+    // Authentication is already performed in `CredentialsProvider.authorize()` function
+    return true;
+  },
+  "google": async (user, account, profile, email, credentials) => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: process.env.NEXTAUTH_BACKEND_URL + "auth/google/",
+        data: {
+          access_token: account["id_token"]
+        },
+      });
+      account["meta"] = response.data;
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+};
 
 const getCurrentEpochTime = () => {
   return Math.floor(new Date().getTime() / 1000);
@@ -56,29 +80,13 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({user, account, profile, email, credentials}) {
-      if (account.provider === "google") {
-        try {
-          const response = await axios({
-            method: "post",
-            url: process.env.NEXTAUTH_BACKEND_URL + "auth/google/",
-            data: {
-              access_token: account["id_token"]
-            },
-          });
-          account["meta"] = response.data;
-          return true;
-        } catch (error) {
-          console.error(error);
-          return false;
-        }
-      } else {
-        return true;
-      }
+      if (!SIGN_IN_PROVIDERS.includes(account.provider)) return false;
+      return SIGN_IN_HANDLERS[account.provider](user, account, profile, email, credentials);
     },
     async jwt({user, token, account}) {
       // If `user` and `account` are set that means it is a login/sign in event
       if (user && account) {
-        let backendResponse = BACKEND_SOCIAL_PROVIDERS.includes(account.provider) ? account.meta : user;
+        let backendResponse = SIGN_IN_SOCIAL_PROVIDERS.includes(account.provider) ? account.meta : user;
         token["user"] = backendResponse.user;
         token["access_token"] = backendResponse.access;
         token["refresh_token"] = backendResponse.refresh;

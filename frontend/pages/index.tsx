@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import {signIn, useSession} from "next-auth/react";
-import {Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Heading, Spinner, Text} from "@chakra-ui/react";
+import {Box, Button, Spinner, Text, VStack} from "@chakra-ui/react";
 
 export default function Home() {
 
@@ -18,20 +18,13 @@ export default function Home() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <Heading size="md">Not authenticated</Heading>
-      </CardHeader>
-      <CardBody py={0}>
+    <Box m={8}>
+      <VStack>
         <Text>You are not authenticated.</Text>
-      </CardBody>
-      <CardFooter>
-        <ButtonGroup>
-          <Button colorScheme="blue" onClick={() => signIn(undefined, {callbackUrl: "/profile"})}>
-            Sign in
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
-    </Card>
+        <Button colorScheme="blue" onClick={() => signIn(undefined, {callbackUrl: "/profile"})}>
+          Sign in
+        </Button>
+      </VStack>
+    </Box>
   );
 }

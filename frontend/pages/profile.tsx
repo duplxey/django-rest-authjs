@@ -1,18 +1,7 @@
 import {useState} from "react";
 import {signOut, useSession} from "next-auth/react";
+import {Box, Button, Code, HStack, Spinner, Text, VStack} from "@chakra-ui/react";
 import axios from "axios";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Code,
-  Heading,
-  Spinner,
-  Text
-} from "@chakra-ui/react";
 
 export default function Home() {
 
@@ -38,32 +27,27 @@ export default function Home() {
 
   if (session) {
     return (
-      <Card>
-        <CardHeader>
-          <Heading size="md">User profile</Heading>
-        </CardHeader>
-        <CardBody py={0}>
-          <Text>Username: {session.user.username}</Text>
-          <Text>Email: {session.user.email ?? "Not specified"}</Text>
+      <Box m={8}>
+        <VStack>
           <Text>PK: {session.user.pk}</Text>
+          <Text>Username: {session.user.username}</Text>
+          <Text>Email: {session.user.email || "Not provided"}</Text>
           <Code>
             {response}
           </Code>
-        </CardBody>
-        <CardFooter>
-          <ButtonGroup>
-            <Button colorScheme="blue" onClick={() => getUserDetails(true)}>
-              Make authenticated request
-            </Button>
-            <Button colorScheme="orange" onClick={() => getUserDetails(false)}>
-              Make unauthenticated request
-            </Button>
-            <Button colorScheme="red" onClick={() => signOut({callbackUrl: "/"})}>
-              Sign out
-            </Button>
-          </ButtonGroup>
-        </CardFooter>
-      </Card>
+        </VStack>
+        <HStack justifyContent="center" mt={4}>
+          <Button colorScheme="blue" onClick={() => getUserDetails(true)}>
+            User details (with token)
+          </Button>
+          <Button colorScheme="orange" onClick={() => getUserDetails(false)}>
+            User details (without token)
+          </Button>
+          <Button colorScheme="red" onClick={() => signOut({callbackUrl: "/"})}>
+            Sign out
+          </Button>
+        </HStack>
+      </Box>
     );
   }
 
