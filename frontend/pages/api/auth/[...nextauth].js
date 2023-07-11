@@ -7,8 +7,10 @@ import axios from "axios";
 const BACKEND_ACCESS_TOKEN_LIFETIME = 45 * 60;            // 45 minutes
 const BACKEND_REFRESH_TOKEN_LIFETIME = 6 * 24 * 60 * 60;  // 6 days
 
-const SIGN_IN_PROVIDERS = ["credentials", "google"];
-const SIGN_IN_SOCIAL_PROVIDERS = ["google"];
+const getCurrentEpochTime = () => {
+  return Math.floor(new Date().getTime() / 1000);
+};
+
 const SIGN_IN_HANDLERS = {
   "credentials": async (user, account, profile, email, credentials) => {
     // Authentication is already performed in `CredentialsProvider.authorize()` function
@@ -31,10 +33,7 @@ const SIGN_IN_HANDLERS = {
     }
   }
 };
-
-const getCurrentEpochTime = () => {
-  return Math.floor(new Date().getTime() / 1000);
-};
+const SIGN_IN_PROVIDERS = Object.keys(SIGN_IN_HANDLERS);
 
 export const authOptions = {
   secret: process.env.AUTH_SECRET,
@@ -86,7 +85,7 @@ export const authOptions = {
     async jwt({user, token, account}) {
       // If `user` and `account` are set that means it is a login/sign in event
       if (user && account) {
-        let backendResponse = SIGN_IN_SOCIAL_PROVIDERS.includes(account.provider) ? account.meta : user;
+        let backendResponse = account.provider === "credentials" ? user : account.meta;
         token["user"] = backendResponse.user;
         token["access_token"] = backendResponse.access;
         token["refresh_token"] = backendResponse.refresh;
