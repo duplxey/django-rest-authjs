@@ -9,7 +9,7 @@ The repository is split into two directories:
 
 ## Want to learn how to build this?
 
-Check out the [post](#).
+Check out the [post](https://testdriven.io/blog/django-rest-authjs/).
 
 ## Want to use this project?
 
